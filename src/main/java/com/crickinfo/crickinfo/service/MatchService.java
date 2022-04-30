@@ -1,9 +1,7 @@
 package com.crickinfo.crickinfo.service;
 
-import com.crickinfo.crickinfo.dto.Item;
-
-import java.util.List;
+import com.crickinfo.crickinfo.entity.Score;
 
 public interface MatchService {
-    void saveDataFromXml(List<Item> items);
+    void saveDataFromXml(Score score);
 }

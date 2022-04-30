@@ -15,6 +15,5 @@ public class MatchController {
 
     @GetMapping("/xml")
     public void getXmlData(){
-        System.out.println(matchService.getDataFromXml());
     }
 }
