@@ -1,9 +1,9 @@
 package com.crickinfo.crickinfo.service;
 
-import com.crickinfo.crickinfo.dto.Channel;
+import com.crickinfo.crickinfo.dto.Item;
 
 import java.util.List;
 
 public interface MatchService {
-    List<Channel> getDataFromXml();
+    void saveDataFromXml(List<Item> items);
 }

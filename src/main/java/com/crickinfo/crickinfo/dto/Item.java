@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Data
 @XmlRootElement
-public class Item {
+public class Item extends BaseDto {
     private String title;
     private String link;
     private String description;
