@@ -3,7 +3,7 @@ package com.crickinfo.crickinfo.scheduler;
 import com.crickinfo.crickinfo.dto.Rss;
 import com.crickinfo.crickinfo.entity.Score;
 import com.crickinfo.crickinfo.repository.ScoresRepository;
-import com.crickinfo.crickinfo.service.MatchService;
+import com.crickinfo.crickinfo.service.DashboardService;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,12 +21,12 @@ import java.util.Optional;
 @Service
 public class ScoresScheduler {
 
-    private final MatchService matchService;
+    private final DashboardService dashboardService;
     private final ScoresRepository scoresRepository;
     private final ModelMapper modelMapper;
 
-    public ScoresScheduler(MatchService matchService, ScoresRepository scoresRepository, ModelMapper modelMapper) {
-        this.matchService = matchService;
+    public ScoresScheduler(DashboardService dashboardService, ScoresRepository scoresRepository, ModelMapper modelMapper) {
+        this.dashboardService = dashboardService;
         this.scoresRepository = scoresRepository;
         this.modelMapper = modelMapper;
     }
@@ -48,10 +48,10 @@ public class ScoresScheduler {
                     scoreEntity = existence.get();
                     modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
                     modelMapper.map(scoreDto, scoreEntity);
-                    matchService.saveDataFromXml(scoreEntity);
+                    dashboardService.saveDataFromXml(scoreEntity);
                 } else {
                     scoreEntity = modelMapper.map(scoreDto, Score.class);
-                    matchService.saveDataFromXml(scoreEntity);
+                    dashboardService.saveDataFromXml(scoreEntity);
                 }
             });
         } catch (Exception e) {

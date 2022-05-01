@@ -4,7 +4,7 @@ import com.crickinfo.crickinfo.dto.ScoreDto;
 import com.crickinfo.crickinfo.entity.Score;
 import com.crickinfo.crickinfo.enums.ActiveStatus;
 import com.crickinfo.crickinfo.repository.ScoresRepository;
-import com.crickinfo.crickinfo.service.MatchService;
+import com.crickinfo.crickinfo.service.DashboardService;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MatchServiceImpl implements MatchService {
+public class DashboardServiceImpl implements DashboardService {
 
     private final ScoresRepository scoresRepository;
 
     private final ModelMapper modelMapper;
 
-    public MatchServiceImpl(ScoresRepository scoresRepository, ModelMapper modelMapper) {
+    public DashboardServiceImpl(ScoresRepository scoresRepository, ModelMapper modelMapper) {
         this.scoresRepository = scoresRepository;
         this.modelMapper = modelMapper;
     }

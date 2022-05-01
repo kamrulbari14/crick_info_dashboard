@@ -16,5 +16,4 @@ public class Channel {
     private String language;
     private String pubDate;
     private List<ScoreDto> item;
-
 }
