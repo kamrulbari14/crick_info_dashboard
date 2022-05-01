@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+    <link href="webjars/bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet"/>
+    <script type="text/javascript" src="webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Cricket Dashboard</title>
+</head>
+<body>
+<div>
+    <div>
+        <h2 class="text-center"> Cricinfo Dashboard</h2>
+    </div>
+    <div class="container">
+        <p style="font-weight: bold">Filter: <input id="txtSearch" type="text" name="keyword"></p>
+        <table id="scoreTable" class="table table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+            <tr class="text-center">
+                <th>SL.</th>
+                <th>Teams and Scores</th>
+                <th>Link</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="text-center" th:each="score, iterationStatus:${scoreList}">
+                <td th:text=${iterationStatus.count}/>
+                <td style="font-weight: bold" th:text=${score.title}/>
+                <td><a th:href="${score.link}" th:target="_blank">Link</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script th:inline="javascript">
+
+    var scoreList = [[${scoreList}]];
+    $('#txtSearch').on('keyup', function () {
+        var value = $(this).val();
+
+        //Get filtered score list
+        var data = FilterFunction(value, scoreList);
+
+        //Rebuild the table with filtered data
+        rebuildTable(data);
+
+    });
+
+    function FilterFunction(value, data) {
+        var filteredData = [];
+        for (var i = 0; i < data.length; i++) {
+            value = value.toLowerCase();
+            var title = data[i].title.toLowerCase();
+
+            if (title.includes(value)) {
+                filteredData.push(data[i]);
+            }
+        }
+        return filteredData;
+    }
+
+    function rebuildTable(data) {
+        var table = document.getElementById('scoreTable');
+        table.innerHTML = '<thead class="thead-dark">\n' +
+            '                <tr class="text-center">\n' +
+            '                   <th>SL.</th>\n' +
+            '                   <th>Teams and Scores</th>\n' +
+            '                   <th>Link</th>\n' +
+            '                </tr>\n' +
+            '            </thead>\n' +
+            '            <tbody>';
+        for (var i = 0; i < data.length; i++) {
+            var row = `<tr class="text-center">
+                            <td>${i + 1}</td>
+                            <td style="font-weight: bold">${data[i].title}</td>
+                            <td><a href="${data[i].link}" target="_blank">Link</a></td>
+                       </tr>`;
+            table.innerHTML += row
+        }
+        table.innerHTML += '</tbody>';
+    }
+</script>
+
+</body>
+</html>

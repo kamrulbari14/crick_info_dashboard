@@ -1,10 +1,11 @@
 package com.crickinfo.crickinfo.controller;
 
 import com.crickinfo.crickinfo.service.MatchService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class MatchController {
 
     private final MatchService matchService;
@@ -13,7 +14,9 @@ public class MatchController {
         this.matchService = matchService;
     }
 
-    @GetMapping("/xml")
-    public void getXmlData(){
+    @GetMapping("/dashboard")
+    public String getAllScores(Model model) {
+        model.addAttribute("scoreList", matchService.getAllScores());
+        return "dashboard";
     }
 }

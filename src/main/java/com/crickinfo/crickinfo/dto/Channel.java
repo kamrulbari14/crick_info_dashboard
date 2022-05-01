@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @XmlRootElement
-public class Channel extends BaseDto {
+public class Channel {
     private String title;
     private String ttl;
     private String link;
@@ -15,6 +15,6 @@ public class Channel extends BaseDto {
     private String copyright;
     private String language;
     private String pubDate;
-    private List<Item> item;
+    private List<ScoreDto> item;
 
 }

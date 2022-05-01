@@ -4,6 +4,7 @@ import com.crickinfo.crickinfo.dto.Rss;
 import com.crickinfo.crickinfo.entity.Score;
 import com.crickinfo.crickinfo.repository.ScoresRepository;
 import com.crickinfo.crickinfo.service.MatchService;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class ScoresScheduler {
@@ -40,16 +39,19 @@ public class ScoresScheduler {
             Document doc = db.parse(new URL("http://static.cricinfo.com/rss/livescores.xml").openStream());
             JAXBContext jaxbContext = JAXBContext.newInstance(Rss.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            Rss matchDto = (Rss) unmarshaller.unmarshal(doc);
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now();
-            System.out.println(dtf.format(now));
-            System.out.println(matchDto);
-            List<Score> scores = scoresRepository.findAll();
-            matchDto.getChannel().getItem().forEach(score -> {
-                if(! scores.stream().map(Score::getTitle).collect(Collectors.toList()).contains(score.getTitle())){
-                    Score score1 = modelMapper.map(score, Score.class);
-                    matchService.saveDataFromXml(score1);
+            Rss matchHistory = (Rss) unmarshaller.unmarshal(doc);
+            List<Score> scoreList = scoresRepository.findAll();
+            matchHistory.getChannel().getItem().forEach(scoreDto -> {
+                Score scoreEntity;
+                Optional<Score> existence = scoreList.stream().filter(score -> score.getLink().equals(scoreDto.getLink())).findFirst();
+                if (existence.isPresent()) {
+                    scoreEntity = existence.get();
+                    modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+                    modelMapper.map(scoreDto, scoreEntity);
+                    matchService.saveDataFromXml(scoreEntity);
+                } else {
+                    scoreEntity = modelMapper.map(scoreDto, Score.class);
+                    matchService.saveDataFromXml(scoreEntity);
                 }
             });
         } catch (Exception e) {
