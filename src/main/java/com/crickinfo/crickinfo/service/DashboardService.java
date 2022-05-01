@@ -5,7 +5,7 @@ import com.crickinfo.crickinfo.entity.Score;
 
 import java.util.List;
 
-public interface MatchService {
+public interface DashboardService {
     void saveDataFromXml(Score score);
 
     List<ScoreDto> getAllScores();

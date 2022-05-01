@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+    <link href="webjars/bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet"/>
+    <script type="text/javascript" src="webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Cricinfo Dashboard</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="#" th:href="@{/dashboard}">Cricinfo Dashboard<span
+                    class="sr-only">(current)</span></a>
+        </div>
+    </div>
+</nav>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">Invalid username or password</div>
+                </div>
+                <div th:if="${param.logout}">
+                    <div class="alert alert-success">You've Successfully logged out !!</div>
+                </div>
+                <h1>Login to the system</h1>
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <input name="username" class="form-control" placeholder="User Name" required
+                               autofocus="autofocus"/>
+                    </div>
+                    <div class="form-group">
+                        <input name="password" type="password" class="form-control" placeholder="Password" required
+                               autofocus="autofocus"/>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Login</button>
+                        <span>
+                        Not registered?
+                        <a href="/" th:href="@{/registration}">Register here</a>
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
